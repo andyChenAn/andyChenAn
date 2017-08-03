@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="jquery插件," />
 
 
 
@@ -94,12 +94,13 @@
 
 
 <meta name="description" content="为什么要写这个插件？最近一直在做公司代码优化方面的事情，由于公司页面中有很多地方都采用了展开与收起的效果（严格上来说，只是显示和隐藏，根本没有做任何动画效果），并且每个页面都是单独写一个的，没有统一，而且经过很多人的迭代之后，代码写都都不太一样，维护难度很高，看着也很不舒服，于是写了一个展开与收起插件，用来管理所有该效果，这样代码量也少了，而且维护成本大大降低，今后要再写类似效果，直接调用插件即可">
+<meta name="keywords" content="jquery插件">
 <meta property="og:type" content="article">
 <meta property="og:title" content="展开与收起插件">
 <meta property="og:url" content="https://andyChenAn.github.io/2017/08/02/展开与收起插件/index.html">
 <meta property="og:site_name" content="ANDY&#39;S BLOG">
 <meta property="og:description" content="为什么要写这个插件？最近一直在做公司代码优化方面的事情，由于公司页面中有很多地方都采用了展开与收起的效果（严格上来说，只是显示和隐藏，根本没有做任何动画效果），并且每个页面都是单独写一个的，没有统一，而且经过很多人的迭代之后，代码写都都不太一样，维护难度很高，看着也很不舒服，于是写了一个展开与收起插件，用来管理所有该效果，这样代码量也少了，而且维护成本大大降低，今后要再写类似效果，直接调用插件即可">
-<meta property="og:updated_time" content="2017-08-02T13:55:38.000Z">
+<meta property="og:updated_time" content="2017-08-03T14:47:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="展开与收起插件">
 <meta name="twitter:description" content="为什么要写这个插件？最近一直在做公司代码优化方面的事情，由于公司页面中有很多地方都采用了展开与收起的效果（严格上来说，只是显示和隐藏，根本没有做任何动画效果），并且每个页面都是单独写一个的，没有统一，而且经过很多人的迭代之后，代码写都都不太一样，维护难度很高，看着也很不舒服，于是写了一个展开与收起插件，用来管理所有该效果，这样代码量也少了，而且维护成本大大降低，今后要再写类似效果，直接调用插件即可">
@@ -353,17 +354,81 @@
       
 
       
-        <h3 id="为什么要写这个插件？"><a href="#为什么要写这个插件？" class="headerlink" title="为什么要写这个插件？"></a>为什么要写这个插件？</h3><p>最近一直在做公司代码优化方面的事情，由于公司页面中有很多地方都采用了展开与收起的效果（严格上来说，只是显示和隐藏，根本没有做任何动画效果），并且每个页面都是单独写一个的，没有统一，而且经过很多人的迭代之后，代码写都都不太一样，维护难度很高，看着也很不舒服，于是写了一个展开与收起插件，用来管理所有该效果，这样代码量也少了，而且维护成本大大降低，今后要再写类似效果，直接调用插件即可，只需要传入几个给定的配置项。</p>
-<h3 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h3><p>编写该插件时，主要的效果就是，当点击展开按钮时，内容全部展开，再点击时，内容收起。实现比较简单。<br><a id="more"></a></p>
+        <h3 id="为什么要写这个插件？"><a href="#为什么要写这个插件？" class="headerlink" title="为什么要写这个插件？"></a>为什么要写这个插件？</h3><p>最近一直在做公司代码优化方面的事情，由于公司页面中有很多地方都采用了展开与收起的效果（严格上来说，只是显示和隐藏，根本没有做任何动画效果），并且每个页面都是单独写一个的，没有统一，而且经过很多人的迭代之后，代码写都都不太一样，维护难度很高，看着也很不舒服，于是写了一个展开与收起插件，用来管理所有该效果，这样代码量也少了，而且维护成本大大降低，今后要再写类似效果，直接调用插件即可，只需要传入几个给定的配置项。<br><a id="more"></a></p>
+<h3 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h3><p>编写该插件时，主要的效果就是，当点击展开按钮时，内容全部展开，再点击时，内容收起。实现比较简单。</p>
 <h3 id="插件配置项"><a href="#插件配置项" class="headerlink" title="插件配置项"></a>插件配置项</h3><p>该插件主要存在以下几个配置项</p>
 <ol>
 <li>height: number类型，表示需要隐藏的内容的高度，默认为0</li>
 <li>target: jquery类型，表示需要将内容展开与收起的对象</li>
 <li>animation: boolean类型，表示展开与收起操作是否需要动画，默认为true</li>
 <li>clickHandler: function类型，表示点击后的操作。</li>
-<li>interval: number类型，表示动画时长。<h3 id="插件代码："><a href="#插件代码：" class="headerlink" title="插件代码："></a>插件代码：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * openUpAndClose: 该插件是展开与收起的插件，主要用于内容的展开与收起</div><div class="line"> * @param  options: object类型，是一个配置对象，主要有以下几个配置项</div><div class="line"> * 1. height: number类型，表示需要隐藏的内容的高度，默认为0</div><div class="line"> * 2. target: jquery类型，表示需要将内容展开与收起的对象</div><div class="line"> * 3. animation: boolean类型，表示展开与收起操作是否需要动画，默认为true</div><div class="line"> * 4. clickHandler: function类型，表示点击后的操作。</div><div class="line"> * 5. interval: number类型，表示动画时长。</div><div class="line"> * @return &#123;[type]&#125;         [description]</div><div class="line"> */</div><div class="line">$.fn.openUpAndClose = <span class="function"><span class="keyword">function</span> (<span class="params">options</span>) </span>&#123;</div><div class="line">	<span class="keyword">if</span> (<span class="keyword">typeof</span> options !== <span class="string">'object'</span> || !options) &#123;</div><div class="line">		options = &#123;&#125;;</div><div class="line">	&#125;;</div><div class="line">	<span class="keyword">var</span> defaults = &#123;</div><div class="line">		<span class="attr">height</span> : <span class="number">0</span>,</div><div class="line">		<span class="attr">target</span> : <span class="keyword">this</span>,</div><div class="line">		<span class="attr">animation</span> : <span class="literal">true</span>,</div><div class="line">		<span class="attr">interval</span> : <span class="number">100</span>,</div><div class="line">		<span class="attr">clickHander</span> : $.noop</div><div class="line">	&#125;;</div><div class="line">	<span class="keyword">var</span> settings = $.extend(&#123;&#125; , defaults , options);</div><div class="line">	<span class="keyword">var</span> target = settings.target;</div><div class="line">	settings.originalHeight = target.outerHeight();</div><div class="line">	<span class="keyword">if</span> (settings.originalHeight &lt;= settings.height) &#123;</div><div class="line">		<span class="keyword">this</span>.remove();</div><div class="line">		<span class="keyword">return</span>;</div><div class="line">	&#125;;</div><div class="line">	settings.isShow = <span class="literal">false</span>;</div><div class="line">	target.css(&#123;</div><div class="line">		<span class="attr">height</span> : settings.height,</div><div class="line">		<span class="attr">overflow</span> : <span class="string">'hidden'</span></div><div class="line">	&#125;);</div><div class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="keyword">var</span> $<span class="keyword">this</span> = $(<span class="keyword">this</span>);</div><div class="line">		$<span class="keyword">this</span>.on(<span class="string">'click'</span> , <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">			<span class="keyword">if</span> (!settings.isShow) &#123;</div><div class="line">				<span class="keyword">if</span> (settings.animation) &#123;</div><div class="line">					target.animate(&#123;</div><div class="line">						<span class="attr">height</span> : settings.originalHeight,</div><div class="line">						<span class="attr">overflow</span> : <span class="string">'auto'</span></div><div class="line">					&#125; , settings.interval);</div><div class="line">				&#125; <span class="keyword">else</span> &#123;</div><div class="line">					target.css(&#123;</div><div class="line">						<span class="attr">height</span> : <span class="string">'auto'</span></div><div class="line">					&#125;);</div><div class="line">				&#125;;</div><div class="line">				settings.isShow = <span class="literal">true</span>;</div><div class="line">			&#125; <span class="keyword">else</span> &#123;</div><div class="line">				<span class="keyword">if</span> (settings.animation) &#123;</div><div class="line">					target.animate(&#123;</div><div class="line">						<span class="attr">height</span> : settings.height,</div><div class="line">						<span class="attr">overflow</span> : <span class="string">'hidden'</span></div><div class="line">					&#125; , settings.interval);</div><div class="line">				&#125; <span class="keyword">else</span> &#123;</div><div class="line">					target.css(&#123;</div><div class="line">						<span class="attr">height</span> : settings.height + <span class="string">'px'</span></div><div class="line">					&#125;);</div><div class="line">				&#125;</div><div class="line">				settings.isShow = <span class="literal">false</span>;</div><div class="line">			&#125;;</div><div class="line">			settings.clickHander.call(<span class="keyword">this</span> , settings);</div><div class="line">		&#125;)</div><div class="line">	&#125;)</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
-</li>
+<li>interval: number类型，表示动画时长。<h3 id="插件代码："><a href="#插件代码：" class="headerlink" title="插件代码："></a>插件代码：</h3></li>
 </ol>
+<p>/**</p>
+<ul>
+<li>openUpAndClose: 该插件是展开与收起的插件，主要用于内容的展开与收起</li>
+<li>@param  options: object类型，是一个配置对象，主要有以下几个配置项</li>
+<li><ol>
+<li>height: number类型，表示需要隐藏的内容的高度，默认为0</li>
+</ol>
+</li>
+<li><ol>
+<li>target: jquery类型，表示需要将内容展开与收起的对象</li>
+</ol>
+</li>
+<li><ol>
+<li>animation: boolean类型，表示展开与收起操作是否需要动画，默认为true</li>
+</ol>
+</li>
+<li><ol>
+<li>clickHandler: function类型，表示点击后的操作。</li>
+</ol>
+</li>
+<li><ol>
+<li>interval: number类型，表示动画时长。</li>
+</ol>
+</li>
+<li>@return {[type]}         [description]<br>*/<br>$.fn.openUpAndClose = function (options) {<br> if (typeof options !== ‘object’ || !options) {<pre><code>options = {};
+</code></pre> };<br> var defaults = {<pre><code>height : 0,
+target : this,
+animation : true,
+interval : 100,
+clickHander : $.noop
+</code></pre> };<br> var settings = $.extend({} , defaults , options);<br> var target = settings.target;<br> settings.originalHeight = target.outerHeight();<br> if (settings.originalHeight &lt;= settings.height) {<pre><code>this.remove();
+return;
+</code></pre> };<br> settings.isShow = false;<br> target.css({<pre><code>height : settings.height,
+overflow : &apos;hidden&apos;
+</code></pre> });<br> return this.each(function () {<pre><code>var $this = $(this);
+$this.on(&apos;click&apos; , function () {
+    if (!settings.isShow) {
+        if (settings.animation) {
+            target.animate({
+                height : settings.originalHeight,
+                overflow : &apos;auto&apos;
+            } , settings.interval);
+        } else {
+            target.css({
+                height : &apos;auto&apos;
+            });
+        };
+        settings.isShow = true;
+    } else {
+        if (settings.animation) {
+            target.animate({
+                height : settings.height,
+                overflow : &apos;hidden&apos;
+            } , settings.interval);
+        } else {
+            target.css({
+                height : settings.height + &apos;px&apos;
+            });
+        }
+        settings.isShow = false;
+    };
+    settings.clickHander.call(this , settings);
+})
+</code></pre> })<br>};</li>
+</ul>
 
       
     </div>
@@ -390,6 +455,12 @@
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jquery插件/" rel="tag"># jquery插件</a>
+          
+        </div>
       
 
       
@@ -473,6 +544,15 @@
 
           
 
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
           
 
         </nav>
