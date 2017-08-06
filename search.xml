@@ -3,11 +3,11 @@
   
     
     <entry>
-      <title><![CDATA[tags]]></title>
+      <title><![CDATA[transform中的matrix]]></title>
       <url>/2017/08/06/tags/</url>
       <content type="html"><![CDATA[<h1 id="transform"><a href="#transform" class="headerlink" title="transform"></a>transform</h1><p>transform是什么呢？从字面意思理解就是”转变”的意思。</p>
 <h3 id="为什么想到要学习transform？"><a href="#为什么想到要学习transform？" class="headerlink" title="为什么想到要学习transform？"></a>为什么想到要学习transform？</h3><p>以前我一直以为transform属性就是translate，rotate，scale，skew这四个。最近一次因为公司有一个需求要做手机滑动效果，于是自己做了一个，感觉还不错，就是那transform来做的。但是当我在网上看到transform居然还可以matrix(1,2,3,4,5,6)类似这样的值时，我其实是惊呆了，然后就开始找资料，看看到底是怎么回事？原来张鑫旭大神在2012年的时候就已经分享过这个东西了，天啦，原来这个早已经存在很多年了，请原谅我的无知。</p>
-<h3 id="Matrix是什么？"><a href="#Matrix是什么？" class="headerlink" title="Matrix是什么？"></a>Matrix是什么？</h3><p>Matrix其实就是”矩阵”的意思。而translate，rotate，scale，skew方法的底层使用的就是这个Matrix方法来实现物体的改变。</p>
+<h3 id="Matrix是什么？"><a href="#Matrix是什么？" class="headerlink" title="Matrix是什么？"></a>Matrix是什么？</h3><p>Matrix其实就是”矩阵”的意思。而translate，rotate，scale，skew方法的底层使用的就是这个Matrix方法来实现物体的改变。<br><a id="more"></a></p>
 <h3 id="Matrix方法是怎么计算的？"><a href="#Matrix方法是怎么计算的？" class="headerlink" title="Matrix方法是怎么计算的？"></a>Matrix方法是怎么计算的？</h3><p>我想这应该是大家比较关心的吧。关于这个问题大家可以去看一下张鑫旭大神的博客就知道了，这里不多介绍了。</p>
 <h3 id="Matrix方法具体实现"><a href="#Matrix方法具体实现" class="headerlink" title="Matrix方法具体实现"></a>Matrix方法具体实现</h3><p>Matrix方法(2D转换)包括6个参数，我们可以写成matrix(a , b , c , d , e , f)这样子，方便我们看，那这六个参数分别代表什么呢？这里我们可以根据transform的四个属性来解释。</p>
 <ol>
