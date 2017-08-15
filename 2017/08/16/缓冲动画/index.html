@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="缓冲动画以前一直想看看动画到底是怎么实现的？尤其是缓冲动画。我们在做一些需求的时候，可能会需要实现一些动画，当然现在实现动画的方式很多种，通过css的time-function就能做出各种类型的动画效果。当然通过js也是可以实现的。有一个tween.js就有很多缓冲动画的公式，我们直接套用公司就能实现出多种动画效果。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="缓冲动画">
+<meta property="og:url" content="https://andyChenAn.github.io/2017/08/16/缓冲动画/index.html">
+<meta property="og:site_name" content="ANDY&#39;S BLOG">
+<meta property="og:description" content="缓冲动画以前一直想看看动画到底是怎么实现的？尤其是缓冲动画。我们在做一些需求的时候，可能会需要实现一些动画，当然现在实现动画的方式很多种，通过css的time-function就能做出各种类型的动画效果。当然通过js也是可以实现的。有一个tween.js就有很多缓冲动画的公式，我们直接套用公司就能实现出多种动画效果。">
+<meta property="og:updated_time" content="2017-08-15T16:03:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="缓冲动画">
+<meta name="twitter:description" content="缓冲动画以前一直想看看动画到底是怎么实现的？尤其是缓冲动画。我们在做一些需求的时候，可能会需要实现一些动画，当然现在实现动画的方式很多种，通过css的time-function就能做出各种类型的动画效果。当然通过js也是可以实现的。有一个tween.js就有很多缓冲动画的公式，我们直接套用公司就能实现出多种动画效果。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"always","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://andyChenAn.github.io/2017/08/16/缓冲动画/"/>
+
+
+
+
+
+  <title>缓冲动画 | ANDY'S BLOG</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ANDY'S BLOG</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">javascript 前端 web</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://andyChenAn.github.io/2017/08/16/缓冲动画/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Andy Chen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ANDY'S BLOG">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">缓冲动画</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-16T00:01:26+08:00">
+                2017-08-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="缓冲动画"><a href="#缓冲动画" class="headerlink" title="缓冲动画"></a>缓冲动画</h3><p>以前一直想看看动画到底是怎么实现的？尤其是缓冲动画。我们在做一些需求的时候，可能会需要实现一些动画，当然现在实现动画的方式很多种，通过css的time-function就能做出各种类型的动画效果。当然通过js也是可以实现的。有一个tween.js就有很多缓冲动画的公式，我们直接套用公司就能实现出多种动画效果。<br><a id="more"></a></p>
+<h3 id="缓冲动画参数"><a href="#缓冲动画参数" class="headerlink" title="缓冲动画参数"></a>缓冲动画参数</h3><p>缓冲动画有4个参数：</p>
+<ol>
+<li>t：timestamp，动画执行到当前帧所进过的时间</li>
+<li>b：beginning，起始值</li>
+<li>c：change，需要变化的值</li>
+<li>d：duration，动画的总时间</li>
+</ol>
+<h3 id="数学原理"><a href="#数学原理" class="headerlink" title="数学原理"></a>数学原理</h3><p>首先我们要搞清楚的就是所做的缓冲动画其实就是帧动画，每一帧所经过的时间相同，只是由于上一帧与下一帧的位移量不同，因此速度在视觉上感受不同，位移量小，感觉上速度就慢了。</p>
+<h3 id="原理分析："><a href="#原理分析：" class="headerlink" title="原理分析："></a>原理分析：</h3><ol>
+<li>动画执行时间的变化可以表示为：0 -&gt; d，提取出常数d，就变为d * (0 -&gt; 1)，变化部分为(0 -&gt; 1)，记为x轴变化。</li>
+<li>动画总的变化量和开始值是已知的，其变化量可以表示为：b -&gt; b + c，提取一下变为：b + c * (0 -&gt; 1)，变化的部分也是(0 -&gt; 1)，记为y轴变化。</li>
+<li>t用来指示事件当前的时间点，将其变为指示动画完成的百分比，即t/d。</li>
+<li>通过上面的变换，我们需要做的事情就是构造x轴区间为[0,1],y轴区间也为[0,1]的线性或者非线性关系了（也可以说是经过(0,0)和(1,1)点的线性或非线性关系），线性关系就是y=x，也就是常用的linear了，非线性复杂一点。</li>
+<li>然后我们看看可以构造出哪些非线性关系，并给出函数关系表达式：</li>
+</ol>
+<ul>
+<li>利用指数函数(x的n次方)可以构造一大堆easein的效果，再根据他们的轴对称或者中心对称做翻转和位移，又可以构造出其对应的easeout效果!</li>
+<li>利用平方根(Math.sqrt)或者立方根来实现这种非线性关系：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">y = Math.sqrt(1 - Math.pow(x - 1 , 2))</div></pre></td></tr></table></figure>
+<p>或者<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">y = 1 - Math.sqrt(1 - x * x)</div></pre></td></tr></table></figure></p>
+<ul>
+<li><p>sin或者cos函数可以通过调节参数构造两种运动趋势(下面主要给函数表达式):</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><div class="line">easein: <span class="keyword">y</span> = <span class="number">1</span>-<span class="built_in">cos</span>(<span class="number">0.5</span>π<span class="keyword">x</span>)</div><div class="line">easeou<span class="variable">t:</span> <span class="keyword">y</span> = <span class="built_in">sin</span>(<span class="number">0.5</span>π<span class="keyword">x</span>)</div></pre></td></tr></table></figure>
+</li>
+<li><p>通过幂函数或者对数函数：</p>
+<figure class="highlight jboss-cli"><table><tr><td class="code"><pre><div class="line">easein: y = 2^<span class="params">(10x-10)</span> <span class="params">(当<span class="attr">x</span>=0时，<span class="attr">y</span>=0)</span></div><div class="line">easeout: y = 1-2^<span class="params">(-10x)</span> <span class="params">(当<span class="attr">x</span>=1时，<span class="attr">y</span>=1)</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="tween-js代码："><a href="#tween-js代码：" class="headerlink" title="tween.js代码："></a>tween.js代码：</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * Tween.js</div><div class="line"> * t: current time（当前时间）</div><div class="line"> * b: beginning value（初始值）</div><div class="line"> * c: change in value（变化量）</div><div class="line"> * d: duration（持续时间）</div><div class="line">*/</div><div class="line"><span class="keyword">var</span> Tween = &#123;</div><div class="line">    <span class="attr">Linear</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123; <span class="keyword">return</span> c*t/d + b; &#125;,</div><div class="line">    <span class="attr">Quad</span>: &#123;</div><div class="line">        <span class="attr">easeIn</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> c * (t /= d) * t + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> -c *(t /= d)*(t<span class="number">-2</span>) + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeInOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> ((t /= d / <span class="number">2</span>) &lt; <span class="number">1</span>) <span class="keyword">return</span> c / <span class="number">2</span> * t * t + b;</div><div class="line">            <span class="keyword">return</span> -c / <span class="number">2</span> * ((--t) * (t<span class="number">-2</span>) - <span class="number">1</span>) + b;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">Cubic</span>: &#123;</div><div class="line">        <span class="attr">easeIn</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> c * (t /= d) * t * t + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> c * ((t = t/d - <span class="number">1</span>) * t * t + <span class="number">1</span>) + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeInOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> ((t /= d / <span class="number">2</span>) &lt; <span class="number">1</span>) <span class="keyword">return</span> c / <span class="number">2</span> * t * t*t + b;</div><div class="line">            <span class="keyword">return</span> c / <span class="number">2</span>*((t -= <span class="number">2</span>) * t * t + <span class="number">2</span>) + b;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">Quart</span>: &#123;</div><div class="line">        <span class="attr">easeIn</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> c * (t /= d) * t * t*t + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> -c * ((t = t/d - <span class="number">1</span>) * t * t*t - <span class="number">1</span>) + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeInOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> ((t /= d / <span class="number">2</span>) &lt; <span class="number">1</span>) <span class="keyword">return</span> c / <span class="number">2</span> * t * t * t * t + b;</div><div class="line">            <span class="keyword">return</span> -c / <span class="number">2</span> * ((t -= <span class="number">2</span>) * t * t*t - <span class="number">2</span>) + b;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">Quint</span>: &#123;</div><div class="line">        <span class="attr">easeIn</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> c * (t /= d) * t * t * t * t + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> c * ((t = t/d - <span class="number">1</span>) * t * t * t * t + <span class="number">1</span>) + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeInOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> ((t /= d / <span class="number">2</span>) &lt; <span class="number">1</span>) <span class="keyword">return</span> c / <span class="number">2</span> * t * t * t * t * t + b;</div><div class="line">            <span class="keyword">return</span> c / <span class="number">2</span>*((t -= <span class="number">2</span>) * t * t * t * t + <span class="number">2</span>) + b;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">Sine</span>: &#123;</div><div class="line">        <span class="attr">easeIn</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> -c * <span class="built_in">Math</span>.cos(t/d * (<span class="built_in">Math</span>.PI/<span class="number">2</span>)) + c + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> c * <span class="built_in">Math</span>.sin(t/d * (<span class="built_in">Math</span>.PI/<span class="number">2</span>)) + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeInOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> -c / <span class="number">2</span> * (<span class="built_in">Math</span>.cos(<span class="built_in">Math</span>.PI * t/d) - <span class="number">1</span>) + b;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">Expo</span>: &#123;</div><div class="line">        <span class="attr">easeIn</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> (t==<span class="number">0</span>) ? b : c * <span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">10</span> * (t/d - <span class="number">1</span>)) + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> (t==d) ? b + c : c * (-<span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">-10</span> * t/d) + <span class="number">1</span>) + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeInOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> (t==<span class="number">0</span>) <span class="keyword">return</span> b;</div><div class="line">            <span class="keyword">if</span> (t==d) <span class="keyword">return</span> b+c;</div><div class="line">            <span class="keyword">if</span> ((t /= d / <span class="number">2</span>) &lt; <span class="number">1</span>) <span class="keyword">return</span> c / <span class="number">2</span> * <span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">10</span> * (t - <span class="number">1</span>)) + b;</div><div class="line">            <span class="keyword">return</span> c / <span class="number">2</span> * (-<span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">-10</span> * --t) + <span class="number">2</span>) + b;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">Circ</span>: &#123;</div><div class="line">        <span class="attr">easeIn</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> -c * (<span class="built_in">Math</span>.sqrt(<span class="number">1</span> - (t /= d) * t) - <span class="number">1</span>) + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> c * <span class="built_in">Math</span>.sqrt(<span class="number">1</span> - (t = t/d - <span class="number">1</span>) * t) + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeInOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> ((t /= d / <span class="number">2</span>) &lt; <span class="number">1</span>) <span class="keyword">return</span> -c / <span class="number">2</span> * (<span class="built_in">Math</span>.sqrt(<span class="number">1</span> - t * t) - <span class="number">1</span>) + b;</div><div class="line">            <span class="keyword">return</span> c / <span class="number">2</span> * (<span class="built_in">Math</span>.sqrt(<span class="number">1</span> - (t -= <span class="number">2</span>) * t) + <span class="number">1</span>) + b;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">Elastic</span>: &#123;</div><div class="line">        <span class="attr">easeIn</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d, a, p</span>) </span>&#123;</div><div class="line">            <span class="keyword">var</span> s;</div><div class="line">            <span class="keyword">if</span> (t==<span class="number">0</span>) <span class="keyword">return</span> b;</div><div class="line">            <span class="keyword">if</span> ((t /= d) == <span class="number">1</span>) <span class="keyword">return</span> b + c;</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> p == <span class="string">"undefined"</span>) p = d * <span class="number">.3</span>;</div><div class="line">            <span class="keyword">if</span> (!a || a &lt; <span class="built_in">Math</span>.abs(c)) &#123;</div><div class="line">                s = p / <span class="number">4</span>;</div><div class="line">                a = c;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                s = p / (<span class="number">2</span> * <span class="built_in">Math</span>.PI) * <span class="built_in">Math</span>.asin(c / a);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> -(a * <span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">10</span> * (t -= <span class="number">1</span>)) * <span class="built_in">Math</span>.sin((t * d - s) * (<span class="number">2</span> * <span class="built_in">Math</span>.PI) / p)) + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d, a, p</span>) </span>&#123;</div><div class="line">            <span class="keyword">var</span> s;</div><div class="line">            <span class="keyword">if</span> (t==<span class="number">0</span>) <span class="keyword">return</span> b;</div><div class="line">            <span class="keyword">if</span> ((t /= d) == <span class="number">1</span>) <span class="keyword">return</span> b + c;</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> p == <span class="string">"undefined"</span>) p = d * <span class="number">.3</span>;</div><div class="line">            <span class="keyword">if</span> (!a || a &lt; <span class="built_in">Math</span>.abs(c)) &#123;</div><div class="line">                a = c; </div><div class="line">                s = p / <span class="number">4</span>;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                s = p/(<span class="number">2</span>*<span class="built_in">Math</span>.PI) * <span class="built_in">Math</span>.asin(c/a);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">return</span> (a * <span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">-10</span> * t) * <span class="built_in">Math</span>.sin((t * d - s) * (<span class="number">2</span> * <span class="built_in">Math</span>.PI) / p) + c + b);</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeInOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d, a, p</span>) </span>&#123;</div><div class="line">            <span class="keyword">var</span> s;</div><div class="line">            <span class="keyword">if</span> (t==<span class="number">0</span>) <span class="keyword">return</span> b;</div><div class="line">            <span class="keyword">if</span> ((t /= d / <span class="number">2</span>) == <span class="number">2</span>) <span class="keyword">return</span> b+c;</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> p == <span class="string">"undefined"</span>) p = d * (<span class="number">.3</span> * <span class="number">1.5</span>);</div><div class="line">            <span class="keyword">if</span> (!a || a &lt; <span class="built_in">Math</span>.abs(c)) &#123;</div><div class="line">                a = c; </div><div class="line">                s = p / <span class="number">4</span>;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                s = p / (<span class="number">2</span>  *<span class="built_in">Math</span>.PI) * <span class="built_in">Math</span>.asin(c / a);</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (t &lt; <span class="number">1</span>) <span class="keyword">return</span> <span class="number">-.5</span> * (a * <span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">10</span>* (t -=<span class="number">1</span> )) * <span class="built_in">Math</span>.sin((t * d - s) * (<span class="number">2</span> * <span class="built_in">Math</span>.PI) / p)) + b;</div><div class="line">            <span class="keyword">return</span> a * <span class="built_in">Math</span>.pow(<span class="number">2</span>, <span class="number">-10</span> * (t -= <span class="number">1</span>)) * <span class="built_in">Math</span>.sin((t * d - s) * (<span class="number">2</span> * <span class="built_in">Math</span>.PI) / p ) * <span class="number">.5</span> + c + b;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">Back</span>: &#123;</div><div class="line">        <span class="attr">easeIn</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d, s</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> s == <span class="string">"undefined"</span>) s = <span class="number">1.70158</span>;</div><div class="line">            <span class="keyword">return</span> c * (t /= d) * t * ((s + <span class="number">1</span>) * t - s) + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d, s</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> s == <span class="string">"undefined"</span>) s = <span class="number">1.70158</span>;</div><div class="line">            <span class="keyword">return</span> c * ((t = t/d - <span class="number">1</span>) * t * ((s + <span class="number">1</span>) * t + s) + <span class="number">1</span>) + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeInOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d, s</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> s == <span class="string">"undefined"</span>) s = <span class="number">1.70158</span>; </div><div class="line">            <span class="keyword">if</span> ((t /= d / <span class="number">2</span>) &lt; <span class="number">1</span>) <span class="keyword">return</span> c / <span class="number">2</span> * (t * t * (((s *= (<span class="number">1.525</span>)) + <span class="number">1</span>) * t - s)) + b;</div><div class="line">            <span class="keyword">return</span> c / <span class="number">2</span>*((t -= <span class="number">2</span>) * t * (((s *= (<span class="number">1.525</span>)) + <span class="number">1</span>) * t + s) + <span class="number">2</span>) + b;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">Bounce</span>: &#123;</div><div class="line">        <span class="attr">easeIn</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> c - Tween.Bounce.easeOut(d-t, <span class="number">0</span>, c, d) + b;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> ((t /= d) &lt; (<span class="number">1</span> / <span class="number">2.75</span>)) &#123;</div><div class="line">                <span class="keyword">return</span> c * (<span class="number">7.5625</span> * t * t) + b;</div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (t &lt; (<span class="number">2</span> / <span class="number">2.75</span>)) &#123;</div><div class="line">                <span class="keyword">return</span> c * (<span class="number">7.5625</span> * (t -= (<span class="number">1.5</span> / <span class="number">2.75</span>)) * t + <span class="number">.75</span>) + b;</div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (t &lt; (<span class="number">2.5</span> / <span class="number">2.75</span>)) &#123;</div><div class="line">                <span class="keyword">return</span> c * (<span class="number">7.5625</span> * (t -= (<span class="number">2.25</span> / <span class="number">2.75</span>)) * t + <span class="number">.9375</span>) + b;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">return</span> c * (<span class="number">7.5625</span> * (t -= (<span class="number">2.625</span> / <span class="number">2.75</span>)) * t + <span class="number">.984375</span>) + b;</div><div class="line">            &#125;</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">easeInOut</span>: <span class="function"><span class="keyword">function</span>(<span class="params">t, b, c, d</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> (t &lt; d / <span class="number">2</span>) &#123;</div><div class="line">                <span class="keyword">return</span> Tween.Bounce.easeIn(t * <span class="number">2</span>, <span class="number">0</span>, c, d) * <span class="number">.5</span> + b;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">return</span> Tween.Bounce.easeOut(t * <span class="number">2</span> - d, <span class="number">0</span>, c, d) * <span class="number">.5</span> + c * <span class="number">.5</span> + b;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="built_in">Math</span>.tween = Tween;</div></pre></td></tr></table></figure>
+<h3 id="实例代码："><a href="#实例代码：" class="headerlink" title="实例代码："></a>实例代码：</h3><figure class="highlight xml"><table><tr><td class="code"><pre><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>缓动动画<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></div><div class="line">		*&#123;</div><div class="line">			<span class="attribute">margin</span>: <span class="number">0</span>;</div><div class="line">			<span class="attribute">padding</span>: <span class="number">0</span>;</div><div class="line">			<span class="attribute">list-style</span>: none;</div><div class="line">		&#125;</div><div class="line">	<span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"margin-bottom:20px;"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"btn"</span> <span class="attr">style</span>=<span class="string">"padding:10px;outline:none;border:none;margin-bottom:20px;cursor:pointer;"</span>&gt;</span>缓入动画<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"box"</span> <span class="attr">style</span>=<span class="string">"width:50px;height:50px;background-color:#f60"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"margin-bottom:20px;"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"btn1"</span> <span class="attr">style</span>=<span class="string">"padding:10px;outline:none;border:none;margin-bottom:20px;cursor:pointer;"</span>&gt;</span>缓出动画<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"box1"</span> <span class="attr">style</span>=<span class="string">"width:50px;height:50px;background-color:#f60"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"margin-bottom:20px;"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"btn2"</span> <span class="attr">style</span>=<span class="string">"padding:10px;outline:none;border:none;margin-bottom:20px;cursor:pointer;"</span>&gt;</span>缓冲动画<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"box2"</span> <span class="attr">style</span>=<span class="string">"width:50px;height:50px;background-color:#f60"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">$</span> (<span class="params">selector</span>) </span>&#123;</div><div class="line">	<span class="keyword">return</span> <span class="built_in">document</span>.querySelector(selector);</div><div class="line">&#125;</div><div class="line"><span class="comment">//先慢后快，easeIn</span></div><div class="line">$(<span class="string">'#btn'</span>).addEventListener(<span class="string">'click'</span> , <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> last = <span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line">	<span class="keyword">var</span> distance = <span class="number">200</span>;</div><div class="line">	<span class="keyword">var</span> duration = <span class="number">1000</span>;</div><div class="line">	<span class="keyword">var</span> timer = <span class="literal">null</span>;</div><div class="line">	<span class="keyword">var</span> move = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="keyword">var</span> p = (<span class="keyword">new</span> <span class="built_in">Date</span>() - last) / duration;</div><div class="line">		$(<span class="string">'#box'</span>).style.transform = <span class="string">'translateX('</span>+ distance * p * p +<span class="string">'px)'</span>;</div><div class="line">		<span class="keyword">if</span> (p &gt; <span class="number">1</span>) &#123;</div><div class="line">			$(<span class="string">'#box'</span>).style.transform = <span class="string">'translateX('</span>+ distance +<span class="string">'px)'</span></div><div class="line">			cancelAnimationFrame(timer);</div><div class="line">			timer = <span class="literal">null</span>;</div><div class="line">			<span class="keyword">return</span> ;</div><div class="line">		&#125;</div><div class="line">		timer = requestAnimationFrame(move);</div><div class="line">	&#125;;</div><div class="line">	move();</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">//先快后慢，easeOut</span></div><div class="line">$(<span class="string">'#btn1'</span>).addEventListener(<span class="string">'click'</span> , <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> last = <span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line">	<span class="keyword">var</span> distance = <span class="number">200</span>;</div><div class="line">	duration = <span class="number">1000</span>;</div><div class="line">	<span class="keyword">var</span> timer = <span class="literal">null</span>;</div><div class="line">	<span class="keyword">var</span> move = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="keyword">var</span> p = (<span class="keyword">new</span> <span class="built_in">Date</span>() - last) / duration;</div><div class="line">		$(<span class="string">'#box1'</span>).style.transform = <span class="string">'translateX('</span>+ distance * (<span class="number">2</span> * p - p * p) +<span class="string">'px)'</span>;</div><div class="line">		<span class="keyword">if</span> (p &gt; <span class="number">1</span>) &#123;</div><div class="line">			$(<span class="string">'#box1'</span>).style.transform = <span class="string">'translateX('</span>+ distance +<span class="string">'px)'</span>;</div><div class="line">			cancelAnimationFrame(timer);</div><div class="line">			timer = <span class="literal">null</span>;</div><div class="line">			<span class="keyword">return</span>;</div><div class="line">		&#125;;</div><div class="line">		timer = requestAnimationFrame(move);</div><div class="line">	&#125;;</div><div class="line">	move();</div><div class="line">&#125;);</div><div class="line"></div><div class="line">$(<span class="string">'#btn2'</span>).addEventListener(<span class="string">'click'</span> , <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> distance = <span class="number">200</span>;</div><div class="line">	<span class="keyword">var</span> duration = <span class="number">1000</span>;</div><div class="line">	<span class="keyword">var</span> last = <span class="keyword">new</span> <span class="built_in">Date</span>();</div><div class="line">	<span class="keyword">var</span> timer = <span class="literal">null</span>;</div><div class="line">	<span class="keyword">var</span> s = <span class="number">0</span>;</div><div class="line">	<span class="keyword">var</span> move = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="keyword">var</span> p = (<span class="keyword">new</span> <span class="built_in">Date</span>() - last) / duration;</div><div class="line">		<span class="comment">//$('#box2').style.transform = 'translateX('+ distance * Math.sqrt(1 - Math.pow(p - 1 , 2)) +'px)';</span></div><div class="line">		$(<span class="string">'#box2'</span>).style.transform = <span class="string">'translateX('</span>+ distance * (<span class="number">1</span> - <span class="built_in">Math</span>.sqrt(<span class="number">1</span> - <span class="built_in">Math</span>.pow(p , <span class="number">2</span>))) +<span class="string">'px)'</span>;</div><div class="line">		<span class="keyword">if</span> (p &gt; <span class="number">1</span>) &#123;</div><div class="line">			$(<span class="string">'#box2'</span>).style.transform = <span class="string">'translateX('</span>+ distance +<span class="string">'px)'</span>;</div><div class="line">			cancelAnimationFrame(timer);</div><div class="line">			timer = <span class="literal">null</span>;</div><div class="line">			<span class="keyword">return</span>;</div><div class="line">		&#125;;</div><div class="line">		requestAnimationFrame(move);</div><div class="line">	&#125;;</div><div class="line">	move();</div><div class="line">&#125;)</div><div class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">	</div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/07/transform插件/" rel="next" title="transform插件">
+                <i class="fa fa-chevron-left"></i> transform插件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Andy Chen" />
+          <p class="site-author-name" itemprop="name">Andy Chen</p>
+           
+              <p class="site-description motion-element" itemprop="description">学习与分享</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#缓冲动画"><span class="nav-number">1.</span> <span class="nav-text">缓冲动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缓冲动画参数"><span class="nav-number">2.</span> <span class="nav-text">缓冲动画参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数学原理"><span class="nav-number">3.</span> <span class="nav-text">数学原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原理分析："><span class="nav-number">4.</span> <span class="nav-text">原理分析：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tween-js代码："><span class="nav-number">5.</span> <span class="nav-text">tween.js代码：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例代码："><span class="nav-number">6.</span> <span class="nav-text">实例代码：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Andy Chen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
