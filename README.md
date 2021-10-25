@@ -4,5 +4,5 @@
 
 想对自己说：努力成为一名合格的前端开发工程师，加油！
 
-[![andy's GitHub stats](https://github-readme-stats.vercel.app/api?username=andyChenAn&show_icons=true&theme=radical)](https://github.com/anuraghazra/github-readme-stats)
-![andy's Most used languages](https://github-readme-stats.vercel.app/api/top-langs/?username=andyChenAn&layout=compact&hide_border=true&langs_count=10&show_icons=true&theme=radical)
+[![andy's GitHub stats](https://github-readme-stats.vercel.app/api?username=andyChenAn&show_icons=true)](https://github.com/anuraghazra/github-readme-stats)
+![andy's Most used languages](https://github-readme-stats.vercel.app/api/top-langs/?username=andyChenAn&layout=compact&hide_border=true&langs_count=10&show_icons=true)
