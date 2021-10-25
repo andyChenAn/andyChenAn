@@ -14,7 +14,7 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
-努力成为一名合格的前端开发工程师
+我想对自己说：努力成为一名合格的前端开发工程师，加油！
 
 [![andy's GitHub stats](https://github-readme-stats.vercel.app/api?username=andyChenAn)](https://github.com/anuraghazra/github-readme-stats)
 ![andy's Most used languages](https://github-readme-stats.vercel.app/api/top-langs/?username=andyChenAn&layout=compact&hide_border=true&langs_count=10)
